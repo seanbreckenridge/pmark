@@ -15,100 +15,119 @@ my $cwd = Cwd::cwd();
 # makes sure a randomly generated filename doesn't exist, writes to the file
 # and makes it executable
 sub create_executable($$) {
-  my ($script_contents, $script_dir) = @_;
-  # generate a random output file name
-  my $output_file = undef;
-  do {
-    $output_file = sprintf("%s%08X", $script_dir, rand(0xFFFFFFFF));
-  } while (-e $output_file);
-  # write to file
-  open(FH, '>', $output_file) or die $!;
-  print FH $script_contents;
-  close(FH);
-  # make executable
-  my $mode = 0755; chmod $mode, $output_file or die "couldn't make $output_file executable";
-  return $output_file;
+    my ( $script_contents, $script_dir ) = @_;
+
+    # generate a random output file name
+    my $output_file = undef;
+    do {
+        $output_file = sprintf( "%s%08X", $script_dir, rand(0xFFFFFFFF) );
+    } while ( -e $output_file );
+
+    # write to file
+    open( FH, '>', $output_file ) or die $!;
+    print FH $script_contents;
+    close(FH);
+
+    # make executable
+    my $mode = 0755;
+    chmod $mode, $output_file or die "couldn't make $output_file executable";
+    return $output_file;
 }
 
 # accepts and script contents, vol, dir and filepath for markdown file
 sub execute_markdown_script($$$$) {
-  my ($script_contents,$vol,$dir,$file) = @_;
-  my $script_dir = File::Spec->catpath($vol, $dir, '');
-  my $script_path = create_executable($script_contents, $script_dir);
-  # set environment variables
-  $ENV{'RUN_FROM'} = $cwd;
-  $ENV{'IN_DIR'} = $script_dir;
-  # create tmpfile to capture script output
-  my ($fh, $tmp_filepath) = tempfile();
-  # change to the script directory
-  chdir $script_dir;
-  # run, exit if script returns non-zero exit code
-  system("$script_path > \"$tmp_filepath\" 2>&1") == 0
-    or die "$script_path exited unsuccessfully $?";
-  # capture all output
-  my $outerr = join('', <$fh>);
-  # remove script/tmpfile
-  unlink $script_path, $tmp_filepath;
-  chdir $cwd; # reset working directory
-  print "."; # for each script run, print a .
-  return $outerr;
+    my ( $script_contents, $vol, $dir, $file ) = @_;
+    my $script_dir  = File::Spec->catpath( $vol, $dir, '' );
+    my $script_path = create_executable( $script_contents, $script_dir );
+
+    # set environment variables
+    $ENV{'RUN_FROM'} = $cwd;
+    $ENV{'IN_DIR'}   = $script_dir;
+
+    # create tmpfile to capture script output
+    my ( $fh, $tmp_filepath ) = tempfile();
+
+    # change to the script directory
+    chdir $script_dir;
+
+    # run, exit if script returns non-zero exit code
+    system("$script_path > \"$tmp_filepath\" 2>&1") == 0
+      or die "$script_path exited unsuccessfully $?";
+
+    # capture all output
+    my $outerr = join( '', <$fh> );
+
+    # remove script/tmpfile
+    unlink $script_path, $tmp_filepath;
+    chdir $cwd;    # reset working directory
+    print ".";     # for each script run, print a .
+    return $outerr;
 }
 
 sub run_pmark($) {
-  my ($md_fp) = @_;
-  # vol is "" if user isn't on windows
-  # dir is the absolute path to the directory
-  # file is the relative filepath (e.g. P_RENDER.md)
-  my $abspath = File::Spec->rel2abs($md_fp);
-  my($vol,$dir,$file) = File::Spec->splitpath($abspath);
-  unless ($file =~ m/^P_/) {
-    print STDERR "$abspath filename doesn't start with 'P_', ignoring...\n";
-    return 1;
-  }
-  # read the markdown file
-  open my $fh, '<', $abspath or die "error opening $abspath $!";
-  my $file_contents = do { local $/; <$fh> };
-  # remove P_ to generate output filepath
-  my $output_filepart = $file =~ s/^P_//r;
-  my $output_filepath = File::Spec->catpath($vol,$dir,$output_filepart);
-  # m: multiline
-  # o: compile pattern once
-  # g: global - all occurrences
-  # e: evaluate replacement as an expression
-  # r: return substitution and leave original string untouched
-  # (?!```) does negative lookahead to include anything not in a block with ```
-  # \s\S+? lazily matches all characters, which is the capture group for the script contents
-  print("Running $dir $file -> $output_filepart");
-  my $modified_file_contents = $file_contents =~ s{
+    my ($md_fp) = @_;
+
+    # vol is "" if user isn't on windows
+    # dir is the absolute path to the directory
+    # file is the relative filepath (e.g. P_RENDER.md)
+    my $abspath = File::Spec->rel2abs($md_fp);
+    my ( $vol, $dir, $file ) = File::Spec->splitpath($abspath);
+    unless ( $file =~ m/^P_/ ) {
+        print STDERR "$abspath filename doesn't start with 'P_', ignoring...\n";
+        return 1;
+    }
+
+    # read the markdown file
+    open my $fh, '<', $abspath or die "error opening $abspath $!";
+    my $file_contents = do { local $/; <$fh> };
+
+    # remove P_ to generate output filepath
+    my $output_filepart = $file =~ s/^P_//r;
+    my $output_filepath = File::Spec->catpath( $vol, $dir, $output_filepart );
+
+# m: multiline
+# o: compile pattern once
+# g: global - all occurrences
+# e: evaluate replacement as an expression
+# r: return substitution and leave original string untouched
+# (?!```) does negative lookahead to include anything not in a block with ```
+# \s\S+? lazily matches all characters, which is the capture group for the script contents
+    print("Running $dir $file -> $output_filepart");
+    my $modified_file_contents = $file_contents =~ s{
     ```\s*\n>>>PMARK\s*((?!```)[\s\S]+?)\s*\n```\s*
   }{
     execute_markdown_script($1,$vol,$dir,$file)
   }mxogre;
-  # write to file
-  open(FH, '>', $output_filepath) or die $!;
-  print FH $modified_file_contents;
-  close(FH);
-  print "\n";
+
+    # write to file
+    open( FH, '>', $output_filepath ) or die $!;
+    print FH $modified_file_contents;
+    close(FH);
+    print "\n";
 }
 
 sub parse_args {
-  my %flags;
-  # keep track of whether or not the user passed something before modifying ARGV with getopts
-  my $passed_nothing = scalar(@ARGV) == 0;
-  getopt('h', \%flags);
-  # if user didn't pass any arguments, or user asked for help...
-  if (exists($flags{h}) or $passed_nothing) {
-    print "Usage: pmark [-h] FILES...\n";
-    print "A hacky, markdown pre-processor. Uses code blocks to generate markdown.\n";
-    print "See https://github.com/seanbreckenridge/pmark for examples.\n";
-    exit 0;
-  }
-  return @ARGV;
+    my %flags;
+
+# keep track of whether or not the user passed something before modifying ARGV with getopts
+    my $passed_nothing = scalar(@ARGV) == 0;
+    getopt( 'h', \%flags );
+
+    # if user didn't pass any arguments, or user asked for help...
+    if ( exists( $flags{h} ) or $passed_nothing ) {
+        print "Usage: pmark [-h] FILES...\n";
+        print
+"A hacky, markdown pre-processor. Uses code blocks to generate markdown.\n";
+        print "See https://github.com/seanbreckenridge/pmark for examples.\n";
+        exit 0;
+    }
+    return @ARGV;
 }
 
 sub main() {
-  my @files = parse_args();
-  foreach(@files) { run_pmark($_); }
+    my @files = parse_args();
+    foreach (@files) { run_pmark($_); }
 }
 
 main()
+
