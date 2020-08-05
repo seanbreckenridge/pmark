@@ -13,7 +13,7 @@ my $cwd = Cwd::cwd();
 # passes script_contents, directory_path
 # writes the script contents to a script file in the markdown files directory
 # makes sure a randomly generated filename doesn't exist, writes to the file
-# and makes it executable by the user.
+# and makes it executable
 sub create_executable($$) {
   my ($script_contents, $script_dir) = @_;
   # generate a random output file name
@@ -26,7 +26,7 @@ sub create_executable($$) {
   print FH $script_contents;
   close(FH);
   # make executable
-  my $mode = 0755; chmod $mode, $output_file or die "couldn't make $output_file execute";
+  my $mode = 0755; chmod $mode, $output_file or die "couldn't make $output_file executable";
   return $output_file;
 }
 
@@ -73,9 +73,9 @@ sub run_pmark($) {
   my $output_filepath = File::Spec->catpath($vol,$dir,$output_filepart);
   # m: multiline
   # o: compile pattern once
-  # g: global - all occurences
+  # g: global - all occurrences
   # e: evaluate replacement as an expression
-  # r: return subtitution and leave original string untouched
+  # r: return substitution and leave original string untouched
   # (?!```) does negative lookahead to include anything not in a block with ```
   # \s\S+? lazily matches all characters, which is the capture group for the script contents
   print("Running $dir $file -> $output_filepart");
@@ -96,7 +96,7 @@ sub parse_args {
   # keep track of whether or not the user passed something before modifying ARGV with getopts
   my $passed_nothing = scalar(@ARGV) == 0;
   getopt('h', \%flags);
-  # if user didnt pass any arguments, or user asked for help...
+  # if user didn't pass any arguments, or user asked for help...
   if (exists($flags{h}) or $passed_nothing) {
     print "Usage: pmark [-h] FILES...\n";
     print "A hacky, markdown pre-processor. Uses code blocks to generate markdown.\n";
