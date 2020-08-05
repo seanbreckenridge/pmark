@@ -1,4 +1,4 @@
-## pmark
+# pmark
 
 A hacky, markdown pre-processor.
 
@@ -77,6 +77,12 @@ This also sets two environment variables that are accessible from within the scr
 
 * `RUN_FROM`: The directory `pmark` was executed in.
 * `IN_DIR`: The directory this markdown file is in.
+
+### Installation
+
+Download the `pmark` script, make it executable and put it on your `$PATH`. Can also use sinister:
+
+`sh <(curl -sSL http://git.io/sinister) -u 'https://raw.githubusercontent.com/seanbreckenridge/pmark/master/pmark'`
 
 ### Specification
 
