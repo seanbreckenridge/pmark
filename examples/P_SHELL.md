@@ -3,18 +3,22 @@
 Description of project
 
 ```
->>>PREMARKDOWN
+>>>PMARK
 #!/bin/sh
-printf 'This was last edited by %s on *%s*\n' "$(whoami)" "$(date)"
+printf 'This was last edited by %s in *%s*\n' "$(whoami)" "$(date +'%Y')"
 ```
 
-Current Weather:
+Hello world:
 
 ```
->>>PREMARKDOWN
+>>>PMARK
 #!/bin/sh
 # i.e. print the beginning of a codeblock, without explicitly writing a codeblock to not break the regex
 perl -E 'print "`"x3, "\n"'
-curl 'wttr.in'
+printf 'echo "Hello World"\n'
 perl -E 'print "`"x3, "\n"'
+```
+
+```
+echo "This code block is ignored..."
 ```
