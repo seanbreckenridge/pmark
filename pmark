@@ -52,7 +52,7 @@ sub execute_markdown_script($$$$) {
 
     # run, exit if script returns non-zero exit code
     system("$script_path > \"$tmp_filepath\" 2>&1") == 0
-      or die "$script_path exited unsuccessfully $?";
+      or die "\n$script_path exited unsuccessfully $?";
 
     # capture all output
     my $outerr = join( '', <$fh> );
