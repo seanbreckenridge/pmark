@@ -61,7 +61,7 @@ sub execute_markdown_script($$$$) {
     unlink $script_path, $tmp_filepath;
     chdir $cwd;    # reset working directory
     print ".";     # for each script run, print a .
-    return $outerr;
+    return $outerr . "\n";  # add a newline to the end
 }
 
 sub run_pmark($) {
