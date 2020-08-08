@@ -80,6 +80,10 @@ This also sets two environment variables that are accessible from within the scr
 
 I use this for my blog, see [`P_README.md`](https://raw.githubusercontent.com/seanbreckenridge/exobrain/master/sitemap/P_README.md) here and the generated page [here](https://exobrain.sean.fish/sitemap/)
 
+If you wanted to run this against all files which contain `pmark` blocks recursively, can combine this with the `find` command:
+
+`find . -name 'P_*.md' -type f -exec pmark {} \;`
+
 ### Installation
 
 Download the `pmark` script, make it executable and put it on your `$PATH`. Can also use sinister:
