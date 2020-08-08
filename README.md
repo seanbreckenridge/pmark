@@ -78,6 +78,8 @@ This also sets two environment variables that are accessible from within the scr
 * `RUN_FROM`: The directory `pmark` was executed in.
 * `IN_DIR`: The directory this markdown file is in.
 
+I use this for my blog, see [`P_README.md`](https://raw.githubusercontent.com/seanbreckenridge/exobrain/master/sitemap/P_README.md) here and the generated page [here](https://exobrain.sean.fish/sitemap/)
+
 ### Installation
 
 Download the `pmark` script, make it executable and put it on your `$PATH`. Can also use sinister:
