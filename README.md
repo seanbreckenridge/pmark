@@ -82,7 +82,7 @@ I use this for my blog, see [`P_README.md`](https://raw.githubusercontent.com/se
 
 If you wanted to run this against all files which contain `pmark` blocks recursively, can combine this with the `find` command:
 
-`find . -name 'P_*.md' -type f -exec pmark {} \;`
+`find . -name 'P_*.md' -type f -exec pmark {} +`
 
 ### Installation
 
