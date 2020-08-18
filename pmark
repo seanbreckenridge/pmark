@@ -74,7 +74,7 @@ sub run_pmark($) {
     my ( $vol, $dir, $file ) = File::Spec->splitpath($abspath);
     unless ( $file =~ m/^P_/ ) {
         print STDERR "$abspath filename doesn't start with 'P_', ignoring...\n";
-        return 1;
+        return;
     }
 
     # read the markdown file
