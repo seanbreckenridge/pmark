@@ -6,7 +6,7 @@ Uses code blocks to generate markdown, from within the markdown itself.
 
 This allows you to specify any sort of script to execute as a code block, whose contents then get replaced by the output of the script.
 
-As an example. In a file `P_README.md`
+As an example, in a file `P_README.md`:
 
 
     ## README
@@ -19,7 +19,7 @@ As an example. In a file `P_README.md`
     printf 'This was last edited by %s on *%s*\n' "$(whoami)" "$(date)"
     ```
 
-Running `pmark ./P_README.md` would generate a `README.md` file, with contents like:
+Running `pmark ./P_README.md` would generate the file `README.md`, with contents:
 
     ## README
 
@@ -59,7 +59,7 @@ Directory Contents:
 
     For more info, visit ...
 
-which would generate the following markdown:
+That would generate the following markdown:
 
 `TABLE_OF_CONTENTS.md`
 
@@ -82,7 +82,7 @@ I use this for my blog, see [`P_README.md`](https://raw.githubusercontent.com/se
 
 If you wanted to run this against all files which contain `pmark` blocks recursively, can combine this with the `find` command:
 
-`find . -name 'P_*.md' -type f -exec pmark {} +`
+`find . -name 'P_*.md' -exec pmark {} +`
 
 ### Installation
 
