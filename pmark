@@ -19,8 +19,11 @@ sub create_executable($$) {
 
     # generate a random output file name
     my $output_file = undef;
+    # generates random script names that look like dir/94XKAKJF-pmark
+    # so that failures can be ignored by .gitignore files like:
+    # *-pmark
     do {
-        $output_file = sprintf( "%s%08X", $script_dir, rand(0xFFFFFFFF) );
+        $output_file = sprintf( "%s%08X-pmark", $script_dir, rand(0xFFFFFFFF) );
     } while ( -e $output_file );
 
     # write to file
