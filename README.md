@@ -84,6 +84,8 @@ If you wanted to run this against all files which contain `pmark` blocks recursi
 
 `find . -name 'P_*.md' -exec pmark {} +`
 
+If no files are provided, this searches for files matching `P_*.md` in the current directory.
+
 ### Installation
 
 Download the `pmark` script, make it executable and put it on your `$PATH`. Can also use sinister:

@@ -19,6 +19,7 @@ sub create_executable($$) {
 
     # generate a random output file name
     my $output_file = undef;
+
     # generates random script names that look like dir/94XKAKJF-pmark
     # so that failures can be ignored by .gitignore files like:
     # *-pmark
@@ -62,9 +63,9 @@ sub execute_markdown_script($$$$) {
 
     # remove script/tmpfile
     unlink $script_path, $tmp_filepath;
-    chdir $cwd;    # reset working directory
-    print ".";     # for each script run, print a .
-    return $outerr . "\n";  # add a newline to the end
+    chdir $cwd;               # reset working directory
+    print ".";                # for each script run, print a .
+    return $outerr . "\n";    # add a newline to the end
 }
 
 sub run_pmark($) {
@@ -109,15 +110,15 @@ sub run_pmark($) {
     print "\n";
 }
 
-sub parse_args {
+sub parse_args($) {
+    my ($force) = @_;
     my %flags;
 
 # keep track of whether or not the user passed something before modifying ARGV with getopts
-    my $passed_nothing = scalar(@ARGV) == 0;
     getopt( 'h', \%flags );
 
     # if user didn't pass any arguments, or user asked for help...
-    if ( exists( $flags{h} ) or $passed_nothing ) {
+    if ( exists( $flags{h} ) or $force ) {
         print "Usage: pmark [-h] FILES...\n";
         print
 "A hacky, markdown pre-processor. Uses code blocks to generate markdown.\n";
@@ -128,9 +129,23 @@ sub parse_args {
 }
 
 sub main() {
-    my @files = parse_args();
+    my @files       = parse_args(0);
+
+    # no files parsed as arguments
+    if ( scalar(@files) == 0 ) {
+        my @default_pmark_files = glob 'P_*.md';
+
+        # no files found in this directory
+        # (and no files passed)
+        if ( scalar(@default_pmark_files) == 0 ) {
+            parse_args(1);
+        }
+        else {
+            # set the files to the default, found P_*.md files
+            @files = @default_pmark_files;
+        }
+    }
     foreach (@files) { run_pmark($_); }
 }
 
 main()
-
