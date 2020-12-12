@@ -129,7 +129,7 @@ sub parse_args($) {
 }
 
 sub main() {
-    my @files       = parse_args(0);
+    my @files = parse_args(0);
 
     # no files parsed as arguments
     if ( scalar(@files) == 0 ) {
