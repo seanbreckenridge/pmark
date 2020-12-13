@@ -84,6 +84,10 @@ If you wanted to run this against all files which contain `pmark` blocks recursi
 
 `find . -name 'P_*.md' -exec pmark {} +`
 
+Or, with [`fd`](https://github.com/sharkdp/fd):
+
+`fd 'P_*' -X pmark`
+
 If no files are provided, this searches for files matching `P_*.md` in the current directory.
 
 ### Installation
