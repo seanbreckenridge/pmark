@@ -89,13 +89,15 @@ sub run_pmark($) {
     my $output_filepart = $file =~ s/^P_//r;
     my $output_filepath = File::Spec->catpath( $vol, $dir, $output_filepart );
 
-# m: multiline
-# o: compile pattern once
-# g: global - all occurrences
-# e: evaluate replacement as an expression
-# r: return substitution and leave original string untouched
-# (?!```) does negative lookahead to include anything not in a block with ```
-# \s\S+? lazily matches all characters, which is the capture group for the script contents
+    # m: multiline
+    # o: compile pattern once
+    # g: global - all occurrences
+    # e: evaluate replacement as an expression
+    # r: return substitution and leave original string untouched
+    # (?!```) does negative lookahead to include
+    # anything not in a block with ```
+    # \s\S+? lazily matches all characters,
+    # which is the capture group for the script contents
     print("Running $dir $file -> $output_filepart");
     my $modified_file_contents = $file_contents =~ s{
     ```\s*\n>>>PMARK\s*((?!```)[\s\S]+?)\s*\n```\s*
@@ -114,7 +116,8 @@ sub parse_args($) {
     my ($force) = @_;
     my %flags;
 
-# keep track of whether or not the user passed something before modifying ARGV with getopts
+    # keep track of whether or not the user passed
+    # something before modifying ARGV with getopts
     getopt( 'h', \%flags );
 
     # if user didn't pass any arguments, or user asked for help...
