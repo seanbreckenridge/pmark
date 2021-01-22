@@ -91,7 +91,7 @@ sub run_pmark($) {
 
     # m: multiline
     # o: compile pattern once
-    # g: global - all occurrences
+    # g: globall - all occurrences
     # e: evaluate replacement as an expression
     # r: return substitution and leave original string untouched
     # (?!```) does negative lookahead to include
