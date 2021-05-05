@@ -94,7 +94,7 @@ If no files are provided, this searches for files matching `P_*.md` in the curre
 
 ---
 
-I'll often use this in Github `README`s, especially for new projects, as while I'm developing tools/libraries it keeps my README up to date with the right flags/example output, e.g.,:
+I'll often use this in Github `README`s, especially for new projects, as while I'm developing tools/libraries it keeps my `README` up to date with the right flags/example output, e.g.,:
 
 ```
 >>>PMARK
