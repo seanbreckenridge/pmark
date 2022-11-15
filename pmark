@@ -1,9 +1,9 @@
 #!/usr/bin/env perl
 
-use File::Temp qw(tempfile);
+use File::Temp  qw(tempfile);
 use Getopt::Std qw(getopt);
-use File::Spec qw(splitpath rel2abs);
-use Cwd qw(cwd);
+use File::Spec  qw(splitpath rel2abs);
+use Cwd         qw(cwd);
 
 use strict;
 use warnings;

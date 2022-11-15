@@ -88,7 +88,7 @@ If you wanted to run this against all files which contain `pmark` blocks recursi
 
 Or, with [`fd`](https://github.com/sharkdp/fd):
 
-`fd 'P_*' -X pmark`
+`fd 'P_*.md' -X pmark`
 
 If no files are provided, this searches for files matching `P_*.md` in the current directory.
 
@@ -114,6 +114,12 @@ As a more complex example, I use this for my blog, see [my blog index](https://g
 Download the `pmark` script, make it executable and put it on your `$PATH`. Can also use sinister:
 
 `sh <(curl -sSL http://git.io/sinister) -u 'https://raw.githubusercontent.com/seanbreckenridge/pmark/master/pmark'`
+
+Or [`basher`](https://github.com/basherpm/basher):
+
+```
+basher install seanbreckenridge/pmark
+```
 
 ### Specification
 
