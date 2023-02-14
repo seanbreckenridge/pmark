@@ -105,6 +105,12 @@ make clean
 perl -E 'print "`"x3, "\n"'
 ```
 
+In my `.git/hooks/pre-commit` I have, so it runs right before I commit:
+
+```
+find . -name 'P_*.md' -exec pmark {} \+
+```
+
 For examples see [here](https://github.com/seanbreckenridge/ttally/blob/26f3b32ed6085efea965185c79e831a0ab033770/P_README.md) or [here](https://github.com/seanbreckenridge/plaintext-playlist/blob/8b053fa45a19ccb4e82f4d47cfe58802a94ff252/P_README.md)
 
 As a more complex example, I use this for my blog, see [my blog index](https://github.com/seanbreckenridge/exobrain/tree/24a5440fe57943c531231fd24f4e2bd07856ccc2/sitemap).
