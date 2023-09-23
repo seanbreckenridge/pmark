@@ -71,7 +71,7 @@ That would generate the following markdown:
 
     For more info, visit ...
 
-Theres no restriction on the language, this creates the corresponding script file (with a random name, like `<script_directory>/CT1PIRQX5-pmark`) and executes it from the markdown files' directory.
+There's no restriction on the language, this creates the corresponding script file (with a random name, like `<script_directory>/CT1PIRQX5-pmark`) and executes it from the markdown files' directory.
 
 ---
 
